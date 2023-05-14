@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  mysql:
+    image: mysql:5.7
+    container_name: ${DBCONTAINER}
+    environment:
+      - MYSQL_DATABASE=${DBNAME}
+      - MYSQL_ROOT_PASSWORD=${DBPASS}
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+        - ${DBPORT}:3306
+
+  www:
+    build: .
+    container_name: ${PSCONTAINER}
+    volumes :
+      - ./www:/var/www/html:rw
+    restart: always
+    ports:
+      - ${PSPORT}:80
+    links:
+      - mysql:${DBCONTAINER}
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: ${MACONTAINER}
+    links:
+      - mysql
+    environment:
+      PMA_HOST: ${DBCONTAINER}
+      PMA_PORT: ${DBPORT}
+    restart: always
+    ports:
+      - ${MAPORT}:80
+
+volumes:
+  mysql:

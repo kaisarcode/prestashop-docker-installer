@@ -31,6 +31,20 @@ sudo chmod -R 777 www
 sudo docker-compose build
 sudo docker-compose up -d
 
+# Check DB is up before continue
+echo 'Check DB is up before continue...'
+for ((attempts = 0; attempts < 30; attempts++)); do
+    if [ "$(docker inspect -f {{.State.Running}} $DBCONTAINER)" == "true" ]; then
+        echo 'DB is up. Continue.'
+        break
+    fi
+    sleep 0.1
+done
+if [ $attempts -eq 30 ]; then
+    echo 'Timeout: DB did not become available within the specified time.'
+fi
+
+# Complete domain info
 if [ $PSPORT != 80 ]; then
     PSDOMAIN="${PSDOMAIN}:${PSPORT}";
 fi

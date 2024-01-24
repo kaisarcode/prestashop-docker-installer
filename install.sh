@@ -9,8 +9,16 @@ sudo chmod -R 777 www
 sudo rm -rf www
 mkdir -p www
 
+# Download PrestaShop source
+major=$(echo "$PSVERSION" | cut -d. -f1)
+minor=$(echo "$PSVERSION" | cut -d. -f2)
+if [ "$major" -lt 8 ] || [ "$major" -eq 8 -a "$minor" -lt 0 ]; then
+    wget "https://download.prestashop.com/download/releases/prestashop_${PSVERSION}.zip"
+else
+    wget "https://github.com/PrestaShop/PrestaShop/releases/download/${PSVERSION}/prestashop_${PSVERSION}.zip"
+fi
+
 # Install base files
-wget "https://github.com/PrestaShop/PrestaShop/releases/download/${PSVERSION}/prestashop_${PSVERSION}.zip"
 unzip prestashop_$PSVERSION.zip -d www
 sudo rm prestashop_$PSVERSION.zip
 rm www/Install_PrestaShop.html

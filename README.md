@@ -1,5 +1,5 @@
 # PrestaShop 8 Autoinstaller
-This is an automatic PrestaShop 8 installer.
+This is an automatic PrestaShop installer.
 
 ## Quickstart
 Just edit the file ".env" in the root folder and change the values as needed.

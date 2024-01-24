@@ -32,12 +32,14 @@ sudo docker-compose build
 sudo docker-compose up -d
 
 # Check DB is up before continue
-echo 'Check DB is up before continue...'
-for ((attempts = 0; attempts < 30; attempts++)); do
-    if [ "$(docker inspect -f {{.State.Running}} $DBCONTAINER)" == "true" ]; then
+echo 'Check DB is up before continuing...'
+attempts=0
+while [ $attempts -lt 30 ]; do
+    if [ "$(sudo docker inspect -f {{.State.Running}} $DBCONTAINER)" = "true" ]; then
         echo 'DB is up. Continue.'
         break
     fi
+    attempts=$((attempts + 1))
     sleep 0.1
 done
 if [ $attempts -eq 30 ]; then

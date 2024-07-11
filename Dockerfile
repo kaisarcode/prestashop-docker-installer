@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG PHP_VERSION='7.4'
@@ -18,11 +18,16 @@ RUN apt-get install -y libapache2-mod-php${PHP_VERSION}
 RUN apt-get install -y php${PHP_VERSION}-cli php${PHP_VERSION}-common
 
 # Install PHP extensions
-RUN apt-get install -y php${PHP_VERSION}-gd php${PHP_VERSION}-zip
-RUN apt-get install -y php${PHP_VERSION}-mysql php${PHP_VERSION}-xml
-RUN apt-get install -y php${PHP_VERSION}-curl php${PHP_VERSION}-json
-RUN apt-get install -y php${PHP_VERSION}-mbstring php${PHP_VERSION}-intl
-RUN apt-get install -y php${PHP_VERSION}-simplexml php${PHP_VERSION}-xmlrpc
+RUN apt-get install -y php${PHP_VERSION}-gd
+RUN apt-get install -y php${PHP_VERSION}-zip
+RUN apt-get install -y php${PHP_VERSION}-mysql
+RUN apt-get install -y php${PHP_VERSION}-xml
+RUN apt-get install -y php${PHP_VERSION}-curl
+#RUN apt-get install -y php${PHP_VERSION}-json
+RUN apt-get install -y php${PHP_VERSION}-mbstring
+RUN apt-get install -y php${PHP_VERSION}-intl
+RUN apt-get install -y php${PHP_VERSION}-simplexml
+RUN apt-get install -y php${PHP_VERSION}-xmlrpc
 
 # Start service
 RUN a2enmod rewrite

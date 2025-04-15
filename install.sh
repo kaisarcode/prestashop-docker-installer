@@ -70,7 +70,7 @@ sudo docker exec -ti $PSCONTAINER sh -c \
 
 # Set up admin dir
 sudo mv www/admin www/$PSADMINDIR
-sudo rm -rf www/var/cache
+#sudo rm -rf www/var/cache
 sudo rm -rf www/install
 
 # Install geolocation database

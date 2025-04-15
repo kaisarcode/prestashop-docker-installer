@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG PHP_VERSION='7.4'
+ARG PHP_VERSION='8.3'
 
 # Install system
 RUN apt-get update && apt-get upgrade -y
@@ -45,4 +45,4 @@ WORKDIR /var/www/html
 
 # Execute
 EXPOSE 80
-CMD apachectl -D FOREGROUND
+CMD ["apachectl", "-D", "FOREGROUND"]

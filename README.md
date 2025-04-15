@@ -31,8 +31,8 @@ Make sure you have installed:
 ### 1. Clone the Repository
 
 ```
-git clone <repository-url>
-cd <repository-folder>
+git clone git@github.com:kaisarcode/prestashop-docker-installer.git
+cd prestashop-docker-installer
 ```
 
 ### 2. Configure Environment Variables

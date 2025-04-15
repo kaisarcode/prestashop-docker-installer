@@ -1,8 +1,139 @@
-# PrestaShop 8 Autoinstaller
-This is an automatic PrestaShop installer.
+# PrestaShop Docker Installer
 
-## Quickstart
-Just edit the file ".env" in the root folder and change the values as needed.
-After that, open a terminal in the project's root directory and execute "sh install.sh".
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
-You can also tweak the DockerFile if you want to use another OS.
+This project provides an automated way to install and run **PrestaShop** using Docker. It includes a CLI installer script, a Dockerfile, and a `docker-compose.yml` file to set up a complete PrestaShop environment with MySQL and phpMyAdmin.
+
+---
+
+## Features
+
+- **Automated Installation**: Downloads and installs the specified PrestaShop version.
+- **Customizable Environment**: Configure PrestaShop settings via the `.env` file.
+- **Dockerized Setup**: Includes MySQL, phpMyAdmin, and Apache containers.
+- **Geolocation Database Included**: Comes with the GeoLite2 database for geolocation support.
+- **Secure Admin Directory**: Renames the admin directory for enhanced security.
+
+---
+
+## Prerequisites
+
+Make sure you have installed:
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- `wget`, `unzip`, and `bash`
+
+---
+
+## Getting Started
+
+### 1. Clone the Repository
+
+```
+git clone <repository-url>
+cd <repository-folder>
+```
+
+### 2. Configure Environment Variables
+
+Edit the existing `.env` file to adjust the configuration to your needs. Example variables include:
+
+```
+PROJID="mystore"
+PSVERSION=8.2.1
+
+PSCONTAINER="ps_${PROJID}"
+DBCONTAINER="db_${PROJID}"
+MACONTAINER="ma_${PROJID}"
+
+PSPORT=8888
+DBPORT=3307
+MAPORT=9999
+
+DBNAME="prestashop"
+DBPASS="admin"
+DBPREFIX="ps_"
+
+PSDOMAIN="localhost"
+PSLANG="es"
+PSNAME="MyStore"
+PSEMAIL="demo@prestashop.com"
+PSPASS="demodemo"
+PSADMINDIR="admin123"
+```
+
+### 3. Run the Installer Script
+
+Make sure the installer script is executable:
+
+```
+chmod +x installer.sh
+```
+
+Run the installer:
+
+```
+./installer.sh
+```
+
+This script will:
+
+- Clean up any previous installation.
+- Download and unpack the specified PrestaShop version.
+- Build and start Docker containers.
+- Install PrestaShop via CLI with your configuration.
+- Rename the admin directory.
+- Install the GeoLite2 geolocation database.
+- Set appropriate permissions.
+
+---
+
+## Accessing Your PrestaShop Environment
+
+- **PrestaShop Front Office:** [http://localhost:8888](http://localhost:8888)
+- **PrestaShop Back Office:** [http://localhost:8888/admin123](http://localhost:8888/admin123) (replace `admin123` with your `PSADMINDIR`)
+- **phpMyAdmin:** [http://localhost:9999](http://localhost:9999)
+
+---
+
+## Project Structure
+
+```
+.
+├── assets/                  # Additional resources (includes GeoLite2 database)
+├── www/                     # PrestaShop source files
+├── installer.sh             # Installation script
+├── Dockerfile               # Dockerfile for PrestaShop container
+├── docker-compose.yml       # Docker Compose configuration
+└── .env                     # Environment variables configuration
+```
+
+---
+
+## Customization
+
+- **PHP Version:** Change the `ARG PHP_VERSION` in the `Dockerfile` to use a different PHP version.
+- **Admin Directory:** Modify `PSADMINDIR` in `.env` to rename the admin folder for security.
+- **Ports and Containers:** Adjust ports and container names in `.env` as needed.
+
+---
+
+## Troubleshooting
+
+- **Database Not Starting:** Verify MySQL container is running (`docker ps`) and credentials in `.env`.
+- **Port Conflicts:** Ensure ports defined in `.env` are free on your host machine.
+- **Timeouts:** The installer waits up to 30 seconds for the database; increase wait time in the script if necessary.
+
+---
+
+## License
+
+This project is licensed under the ISC License. See the **LICENSE** file for details.
+
+---
+
+## Contributing
+
+Feel free to open issues or submit pull requests to improve this project.
+```

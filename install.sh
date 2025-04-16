@@ -36,14 +36,18 @@ echo 'Check DB is up before continuing...'
 attempts=0
 while [ $attempts -lt 30 ]; do
     if [ "$(sudo docker inspect -f {{.State.Running}} $DBCONTAINER)" = "true" ]; then
-        echo 'DB is up. Continue.'
-        break
+        # Additional check for MySQL 8.0
+        if sudo docker exec $DBCONTAINER mysqladmin ping -h localhost -u root -p${DBPASS} > /dev/null 2>&1; then
+            echo 'DB is up and responding. Continue.'
+            break
+        fi
     fi
     attempts=$((attempts + 1))
-    sleep 0.1
+    sleep 1
 done
 if [ $attempts -eq 30 ]; then
     echo 'Timeout: DB did not become available within the specified time.'
+    exit 1
 fi
 
 # Complete domain info
@@ -59,6 +63,7 @@ sudo docker exec -ti $PSCONTAINER sh -c \
 --db_server=${DBCONTAINER} \
 --db_name=${DBNAME} \
 --db_password=${DBPASS} \
+--db_user=root \
 --prefix=${DBPREFIX} \
 --domain=${PSDOMAIN} \
 --language=${PSLANG} \
@@ -66,7 +71,7 @@ sudo docker exec -ti $PSCONTAINER sh -c \
 --password=${PSPASS} \
 --name=${PSNAME} \
 --send_email=0 \
---newsletter=0"; #> /dev/null 2>&1;
+--newsletter=0"
 
 # Set up admin dir
 sudo mv www/admin www/$PSADMINDIR
